@@ -33,18 +33,19 @@ get_otp <-
 #' @export
 #' @examples
 #' get_cipher("Talley", get_otp())
-get_cipher <- function(message_str, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
-    message <- strsplit(toupper(message_str), "")[[1]]
-    alphanum <- strsplit(alphanum_str, "")[[1]]
-    alphanumkey <- strsplit(otp_str, "")[[1]]
-    dt <- data.table::data.table(k = alphanumkey)
-    dt <- dt[, kpos := grep(k, alphanum), k][1:length(message)]
-    dt[, m := message]
-    dt[, mpos := grep(m, alphanum), m]
-    dt[, newpos := (mpos + kpos) %% 36 + 1]
-    dt[, newm := alphanum[newpos]]
-    dt[, paste0(newm, collapse="")][[1]]
-}
+get_otp_cipher <-
+    function(message_str, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
+        message <- strsplit(toupper(message_str), "")[[1]]
+        alphanum <- strsplit(alphanum_str, "")[[1]]
+        alphanumkey <- strsplit(otp_str, "")[[1]]
+        dt <- data.table::data.table(k = alphanumkey)
+        dt <- dt[, kpos := grep(k, alphanum), k][1:length(message)]
+        dt[, m := message]
+        dt[, mpos := grep(m, alphanum), m]
+        dt[, newpos := (mpos + kpos) %% 36 + 1]
+        dt[, newm := alphanum[newpos]]
+        dt[, paste0(newm, collapse = "")][[1]]
+    }
 
 
 #' Create a data.table of message ciphers using a One-Time Pad.
@@ -58,13 +59,52 @@ get_cipher <- function(message_str, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRS
 #' @examples
 #' names <- c("Billy", "Bob", "Thornton")
 #' get_ciphers(names, get_otp())
-get_ciphers <- function(message_vct, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
-    if (is.character(message_vct)) {
-        dt <- data.table::data.table(m = message_vct)
-        dt[, newm := get_cipher(m, otp_str), m]
-        attr(dt, "otp") <- otp_str
-        dt
-    } else {
-        print("Not a character vector")
+get_otp_ciphers <-
+    function(message_vct, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
+        if (is.character(message_vct)) {
+            dt <- data.table::data.table(m = message_vct)
+            dt[, newm := get_cipher(m, otp_str), m]
+            attr(dt, "otp") <- otp_str
+            dt
+        } else {
+            print("Not a character vector")
+        }
     }
-}
+
+
+#' Decipher using a One-Time Pad.
+#'
+#' @param cipher_str A cipher created using the one-time pad (string).
+#' @param otp_str One-time pad (string)
+#' @param alphanum_str Optional. The alphanumeric string to be used creating the message ciphers.
+#'
+#' @import data.table
+#' @export
+#' @examples
+#' cipher_str <- "VUD39"
+#' otp_str <- "SK0QJYPGXMU1H4BER89OCZTW6VNFA5L37DI2"
+#' decipher(cipher_str, otp_str)
+#' # BILLY
+decipher_otp <-
+    function(cipher_str, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
+        cipher <- strsplit(cipher_str, "")[[1]]
+        alphanumkey <- strsplit(otp_str, "")[[1]]
+        alphanum <- strsplit(alphanum_str, "")[[1]]
+
+        dt <- data.table::data.table(k = alphanumkey)
+        dt <- dt[, kpos := grep(k, alphanum), k][1:length(cipher)]
+        dt[, c := cipher]
+        dt[, cpos := grep(c, alphanum), c]
+
+        orig <- ""
+        for (i in 1:nrow(dt)) {
+            kpos <- dt[i, .(kpos)][[1]]
+            cpos <- dt[i, .(cpos)][[1]]
+            p <- 0
+            while ((kpos + p) %% 36 + 1 != cpos) {
+                p = p + 1
+            }
+            orig <- paste0(orig, alphanum[p])
+        }
+        orig
+    }
