@@ -83,7 +83,7 @@ get_otp_ciphers <-
 #' @examples
 #' cipher_str <- "VUD39"
 #' otp_str <- "SK0QJYPGXMU1H4BER89OCZTW6VNFA5L37DI2"
-#' decipher(cipher_str, otp_str)
+#' decipher_otp(cipher_str, otp_str)
 #' # BILLY
 decipher_otp <-
     function(cipher_str, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
