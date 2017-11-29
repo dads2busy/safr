@@ -1,0 +1,14 @@
+Package: safr
+Type: Package
+Title: Functions for OTP, Shuffling, Chaffing, and Padding
+Version: 0.1.0
+Authors@R: person("Aaron", "Schroeder", email = "aschroed@vt.edu",
+  role = c("aut", "cre"))
+Description: Functions for OTP, Shuffling, Chaffing, and Padding
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.0.0)
+Imports:
+	data.table (>= 1.9.4)
+RoxygenNote: 6.0.1
