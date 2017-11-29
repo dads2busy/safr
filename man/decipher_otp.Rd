@@ -20,6 +20,6 @@ Decipher using a One-Time Pad.
 \examples{
 cipher_str <- "VUD39"
 otp_str <- "SK0QJYPGXMU1H4BER89OCZTW6VNFA5L37DI2"
-decipher(cipher_str, otp_str)
+decipher_otp(cipher_str, otp_str)
 # BILLY
 }
