@@ -58,7 +58,10 @@ get_otp_cipher <-
 #' @export
 #' @examples
 #' names <- c("Billy", "Bob", "Thornton")
-#' get_otp_ciphers(names, get_otp())
+#' otp_ciphers <- get_otp_ciphers(names, get_otp())
+#' otp_ciphers
+#' attr(otp_ciphers, "otp_str")
+#' attr(otp_ciphers, "alphanum_str")
 get_otp_ciphers <-
     function(message_vct, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
         if (is.character(message_vct)) {
