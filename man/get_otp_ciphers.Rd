@@ -19,5 +19,5 @@ Create a data.table of message ciphers using a One-Time Pad.
 }
 \examples{
 names <- c("Billy", "Bob", "Thornton")
-get_ciphers(names, get_otp())
+get_otp_ciphers(names, get_otp())
 }

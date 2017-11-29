@@ -32,7 +32,7 @@ get_otp <-
 #' @import data.table
 #' @export
 #' @examples
-#' get_cipher("Talley", get_otp())
+#' get_otp_cipher("Talley", get_otp())
 get_otp_cipher <-
     function(message_str, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
         message <- strsplit(toupper(message_str), "")[[1]]
@@ -58,12 +58,12 @@ get_otp_cipher <-
 #' @export
 #' @examples
 #' names <- c("Billy", "Bob", "Thornton")
-#' get_ciphers(names, get_otp())
+#' get_otp_ciphers(names, get_otp())
 get_otp_ciphers <-
     function(message_vct, otp_str, alphanum_str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
         if (is.character(message_vct)) {
             dt <- data.table::data.table(m = message_vct)
-            dt[, newm := get_cipher(m, otp_str), m]
+            dt[, newm := get_otp_cipher(m, otp_str), m]
             attr(dt, "otp_str") <- otp_str
             attr(dt, "alphanum_str") <- alphanum_str
             dt

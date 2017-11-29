@@ -18,5 +18,5 @@ get_otp_cipher(message_str, otp_str,
 Create a Cipher of a Message using a One-Time Pad.
 }
 \examples{
-get_cipher("Talley", get_otp())
+get_otp_cipher("Talley", get_otp())
 }
