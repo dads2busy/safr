@@ -64,7 +64,8 @@ get_otp_ciphers <-
         if (is.character(message_vct)) {
             dt <- data.table::data.table(m = message_vct)
             dt[, newm := get_cipher(m, otp_str), m]
-            attr(dt, "otp") <- otp_str
+            attr(dt, "otp_str") <- otp_str
+            attr(dt, "alphanum_str") <- alphanum_str
             dt
         } else {
             print("Not a character vector")
